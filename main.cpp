@@ -82,8 +82,8 @@ int main(int argc, char *argv[])
 
 void init_curses()
 {
-    initscr();			/* Start curses mode 		*/
-    raw();				/* Line buffering disabled	*/
+    initscr();                  /* Start curses mode 		*/
+    raw();                      /* Line buffering disabled	*/
     keypad(stdscr, TRUE);		/* We get F1, F2 etc..		*/
     noecho();
     timeout(1000/6);

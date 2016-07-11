@@ -13,10 +13,10 @@ public:
 
     enum Direction
     {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
+        UP = -1,
+        DOWN = 1,
+        LEFT = -2,
+        RIGHT = 2
     };
 
     Player(point init_position = point(0, 0));
@@ -26,9 +26,9 @@ public:
     void increaseTail();
     const Block& head() const;
 private:
-    std::vector<Block> _tail;
-    Block* _head;
-    Direction _direction;
+    std::vector<Block> tail_;
+    Block* head_;
+    Direction direction_;
 };
 
 } // namespace Snake

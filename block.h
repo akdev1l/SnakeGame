@@ -27,9 +27,9 @@ public:
     void setPosition(const point& new_pos);
 
 private:
-    point _position;
-    char _symbol;
-    TYPE _type;
+    point position_;
+    char symbol_;
+    TYPE type_;
 };
 
 point& operator+=(point& lhs, const point& rhs);

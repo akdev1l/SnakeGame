@@ -4,15 +4,15 @@
 namespace Snake {
 
 Player::Player(point init_position)
-    : _tail{Block(Block::PLAYER, init_position)}
-    , _head(&_tail.front())
-    , _direction(RIGHT)
+    : tail_{Block(Block::PLAYER, init_position)}
+    , head_(&tail_.front())
+    , direction_(RIGHT)
 {
 }
 int Player::step()
 {
     point offset;
-    switch(_direction) {
+    switch(direction_) {
     case UP:
         offset = point(0, -1);
     break;
@@ -26,18 +26,19 @@ int Player::step()
         offset = point(1, 0);
     break;
     }
-    point new_pos = _head->getPosition();
+    point new_pos = head_->getPosition();
     new_pos += offset;
-    for(const Block& el : _tail) {
+    for(const Block& el : tail_) {
         if(new_pos == el.getPosition()) {
-            return -1; //crashed
+            return -1; //player crashed against its tail
         }
     }
-    for(auto it = _tail.rbegin(); it != _tail.rend() - 1; ++it) {
+    /* This moves the tail to follow the head */
+    for(auto it = tail_.rbegin(); it != tail_.rend() - 1; ++it) {
         auto previous = it + 1;
         it->setPosition(previous->getPosition());
     }
-    _head->move(offset);
+    head_->move(offset);
     return 0;
 }
 void Player::setDirection(Direction dir)
@@ -45,31 +46,28 @@ void Player::setDirection(Direction dir)
     auto isOpposite =
             [](const Direction& direction, const Direction& dir)
             {
-                return (direction == UP && dir == DOWN)
-                    || (direction == DOWN && dir == UP)
-                    || (direction == LEFT && dir == RIGHT)
-                    || (direction == RIGHT && dir == LEFT);
+                return direction + dir == 0;
             };
 
-    if(!isOpposite(_direction, dir)){
-        _direction = dir;
+    if(!isOpposite(direction_, dir)){
+        direction_ = dir;
     }
 }
 void Player::render() const
 {
-    for(const Block& block : _tail)
+    for(const Block& block : tail_)
     {
         block.render();
     }
 }
 void Player::increaseTail()
 {
-    _tail.push_back(Block(Block::PLAYER));
-    _head = &_tail.front();
+    tail_.push_back(Block(Block::PLAYER));
+    head_ = &tail_.front();
 }
 
 const Block& Player::head() const
 {
-    return *_head;
+    return *head_;
 }
 } // namespace Snake

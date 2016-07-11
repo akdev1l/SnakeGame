@@ -7,27 +7,27 @@ namespace Snake {
 
 Block::Block(const TYPE& block_type, point position)
     :
-      _position(position),
-      _symbol(block_type),
-      _type(block_type)
+      position_(position),
+      symbol_(block_type),
+      type_(block_type)
 {
 
 }
 
 void Block::render() const
 {
-    mvaddch(_position.second, _position.first, _symbol);
+    mvaddch(position_.second, position_.first, symbol_);
 }
 
 Block::TYPE Block::getType() const
 {
-    return _type;
+    return type_;
 }
 
 void Block::changeType(Block::TYPE new_type)
 {
-    _symbol = new_type;
-    _type = new_type;
+    symbol_ = new_type;
+    type_ = new_type;
 }
 
 Block::~Block()
@@ -37,17 +37,17 @@ Block::~Block()
 
 void Block::move(point offset)
 {
-    _position += offset;
+    position_ += offset;
 }
 
 point Block::getPosition() const
 {
-    return _position;
+    return position_;
 }
 
 void Block::setPosition(const point& new_pos)
 {
-    _position = new_pos;
+    position_ = new_pos;
 }
 
 point& operator+=(point& lhs, const point& rhs)
