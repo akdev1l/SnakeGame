@@ -62,7 +62,7 @@ void Player::render() const
 }
 void Player::increaseTail()
 {
-    tail_.push_back(Block(Block::PLAYER));
+    tail_.push_back(Block(Block::PLAYER, head_->getPosition()));
     head_ = &tail_.front();
 }
 

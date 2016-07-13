@@ -5,7 +5,7 @@
 
 namespace Snake {
 
-typedef std::pair<unsigned int, unsigned int> point;
+typedef std::pair<int, int> point;
 
 class Block
 {

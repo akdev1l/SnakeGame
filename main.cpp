@@ -1,7 +1,6 @@
 #include <ncurses.h>
 #include <vector>
 #include <random>
-#include <chrono>
 
 #include "player.h"
 
@@ -15,7 +14,7 @@ namespace Snake
 void init_curses();
 void init_board(Snake::Board& board, const int &cols, const int &rows);
 void render_board(const Snake::Board& board);
-void addEatable(Snake::Board& board);
+void addEatable(Snake::Board& board, Snake::point& eatablePoint);
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +27,7 @@ int main(int argc, char *argv[])
     unsigned int score = 0;
     getmaxyx(stdscr, rows, cols);
     Snake::Player me(Snake::point(cols/2, rows/2));
+    Snake::point eatable(-1, -1);
 
     init_board(board, cols, rows);
     do {
@@ -65,12 +65,13 @@ int main(int argc, char *argv[])
         case Snake::Block::EATABLE:
             current_block.changeType(Snake::Block::EMPTY);
             me.increaseTail();
+            eatable = Snake::point(-1, -1);
             ++score;
         break;
         default:
         break;
         }
-        addEatable(board);
+        addEatable(board, eatable);
 
     } while(input != 'q' && !playerLost);
 
@@ -86,7 +87,7 @@ void init_curses()
     raw();                      /* Line buffering disabled	*/
     keypad(stdscr, TRUE);		/* We get F1, F2 etc..		*/
     noecho();
-    timeout(1000/6);
+    timeout(400/6);
     curs_set(0);
 }
 
@@ -124,15 +125,21 @@ void render_board(const Snake::Board& board)
         }
     }
 }
+bool isValid(const Snake::point& p)
+{
+    return p.first >= 0 && p.second >=0;
+}
 
-void addEatable(Snake::Board& board)
+void addEatable(Snake::Board& board, Snake::point& eatablePoint)
 {
     std::random_device rand_device;
     std::mt19937 gen(rand_device());
-    std::uniform_int_distribution<> row(1, board.size()-1);
-    std::uniform_int_distribution<> col(1, board[0].size()-1);
+    std::uniform_int_distribution<> row(1, board.size()-2);
+    std::uniform_int_distribution<> col(1, board[0].size()-2);
 
-    if(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1) % 10 == 0){
-        board[row(gen)][col(gen)].changeType(Snake::Block::EATABLE);
+    if(!isValid(eatablePoint)){
+        eatablePoint.first = col(gen);
+        eatablePoint.second = row(gen);
+        board[eatablePoint.second][eatablePoint.first].changeType(Snake::Block::EATABLE);
     }
 }

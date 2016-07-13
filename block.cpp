@@ -1,7 +1,7 @@
+#include <ncurses.h>
+
 #include "block.h"
 
-#include <iostream>
-#include <ncurses.h>
 
 namespace Snake {
 
