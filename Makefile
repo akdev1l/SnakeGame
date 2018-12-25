@@ -7,8 +7,8 @@ LDFLAGS := -lcurses
 BIN_DIR := bin
 BIN_FILE := snake-game
 
-PREFIX := /
-INST_DIR := ${PREFIX}usr/bin/${BIN_FILE}
+PREFIX := /tmp/
+INST_DEST := ${PREFIX}usr/bin/${BIN_FILE}
 
 SRCS := $(wildcard *.cpp)
 OBJ_FILES := $(patsubst %.cpp,%.o,${SRCS})
@@ -18,6 +18,12 @@ all: directories ${BIN_FILE}
 .PHONY: clean
 clean:
 	rm -rf "${BIN_DIR}"
+
+.PHONY: install
+install: 
+	mkdir -p $(dir ${INST_DEST})
+	install --mode=755 ${BIN_DIR}/${BIN_FILE} ${INST_DEST}
+
 
 ${BIN_FILE}: ${OBJ_FILES}
 	${CXX} ${LDFLAGS} $(addprefix ${BIN_DIR}/,${OBJ_FILES}) -o ${BIN_DIR}/${BIN_FILE}
