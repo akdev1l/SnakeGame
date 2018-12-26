@@ -38,10 +38,15 @@ clean:
 install: all
 	mkdir -p $(dir ${INST_DEST})
 	install --mode=755 ${BIN_DIR}/${BIN_FILE} ${INST_DEST}
-rpm: release
+rpm: release rpmtree
 	cp ${RELFILE} ${TOPDIR}/SOURCES
 	rpmbuild -ba --define '_topdir ${TOPDIR}' ${SPEC_FILE}
-
+rpmtree:
+	if [ ! -d ${TOPDIR} ]; then \
+		rpmdev-setuptree; \
+		cp -r ~/rpmbuild ${TOPDIR}; \
+		rpmdev-wipetree; \
+	fi
 .PHONY: release
 release: clean
 	ln -s . ${RELDIR}
