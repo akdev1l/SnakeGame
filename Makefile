@@ -50,7 +50,7 @@ rpmtree:
 .PHONY: release
 release: clean
 	ln -s . ${RELDIR}
-	tar cvzf ${RELFILE} ${RELDIR}
+	tar cvzf ${RELFILE} -- ${RELDIR}/*
 
 ${BIN_FILE}: ${OBJ_FILES}
 	${CXX} ${LDFLAGS} $(addprefix ${BIN_DIR}/,${OBJ_FILES}) -o ${BIN_DIR}/${BIN_FILE}
