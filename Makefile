@@ -1,7 +1,7 @@
 # Compiler Options
 CXX := g++
 CC  := gcc
-CXX_FLAGS := -O2
+CXX_FLAGS := -O2 -std=c++11
 CFLAGS := -O2
 LDFLAGS := -lcurses
 
